@@ -47,6 +47,7 @@ class TodoProvider with ChangeNotifier {
     } catch (e) {
       errorMessage = e.toString();
       notifyListeners();
+      throw Exception('Error al actualizar');
     }
   }
 }

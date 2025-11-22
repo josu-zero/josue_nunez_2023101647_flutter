@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/todo_provider.dart';
@@ -29,11 +31,19 @@ class DetailPage extends StatelessWidget {
               title: const Text('Completada'),
               value: todo.completed,
               onChanged: (value) async {
-                await provider.updateTodoStatus(todo.id, value);
-                // ignore: use_build_context_synchronously
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Tarea actualizada')),
-                );
+                try {
+                  await provider.updateTodoStatus(todo.id, value);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Tarea actualizada')),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('No se pudo actualizar la tarea'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               },
             ),
           ],
